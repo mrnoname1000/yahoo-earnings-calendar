@@ -31,9 +31,10 @@ class YahooEarningsCalendar(object):
     def __init__(self, delay=SLEEP_BETWEEN_REQUESTS_S):
         self.delay = delay
 
-    def _get_data_dict(self, url):
+    def _get_data_dict(self, url, **headers):
+        headers.setdefault('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36')
         time.sleep(self.delay)
-        page = requests.get(url)
+        page = requests.get(url, headers=headers)
         page_content = page.content.decode(encoding='utf-8', errors='strict')
         page_data_string = [row for row in page_content.split(
             '\n') if row.startswith('root.App.main = ')][0][:-1]
